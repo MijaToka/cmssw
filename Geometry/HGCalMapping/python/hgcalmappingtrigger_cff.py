@@ -19,7 +19,7 @@ def customise_hgcalmapper(process,
     # process.hgCalMappingCellESProducer = cms.ESProducer('hgcal::HGCalMappingCellESProducer@alpaka',
     #                                                     filelist=cms.vstring(sicells, sipmcells),
     #                                                     cellindexer=cms.ESInputTag(''))
-    process.hgCalMappingModuleESProducer = cms.ESProducer('hgcal::HGCalMappingTriggerESProducer',
+    process.hgCalMappingModuleESProducer = cms.ESProducer('HGCalMappingTriggerESProducer',
                                                           filename=cms.FileInPath(modules),
                                                           moduleindexer=cms.ESInputTag(''))
     # process.hgCalDenseIndexInfoESProducer = cms.ESProducer('hgcal::HGCalDenseIndexInfoESProducer@alpaka',
