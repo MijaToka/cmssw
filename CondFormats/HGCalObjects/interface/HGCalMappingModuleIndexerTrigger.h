@@ -1,5 +1,5 @@
-#ifndef CondFormats_HGCalObjects_interface_HGCalMappingParameterIndex_h
-#define CondFormats_HGCalObjects_interface_HGCalMappingParameterIndex_h
+#ifndef CondFormats_HGCalObjects_interface_HGCalMappingTriggerParameterIndex_h
+#define CondFormats_HGCalObjects_interface_HGCalMappingTriggerParameterIndex_h
 
 #include <cstdint>
 #include <vector>

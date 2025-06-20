@@ -1,5 +1,5 @@
-#ifndef CondFormats_HGCalObjects_interface_HGCalMappingCellParameterIndex_h
-#define CondFormats_HGCalObjects_interface_HGCalMappingCellParameterIndex_h
+#ifndef CondFormats_HGCalObjects_interface_HGCalMappingCellTriggerParameterIndex_h
+#define CondFormats_HGCalObjects_interface_HGCalMappingCellTriggerParameterIndex_h
 
 #include <iostream>
 #include <cstdint>
