@@ -9,14 +9,10 @@
 #include "FWCore/Utilities/interface/do_nothing_deleter.h"
 #include "CondFormats/DataRecord/interface/HGCalElectronicsMappingRcd.h"
 
-/*
-#include "CondFormats/HGCalObjects/interface/HGCalMappingModuleIndexer.h"
-#include "CondFormats/HGCalObjects/interface/HGCalMappingCellIndexer.h"
-*/
-#include "HGCalCommissioning/HGCalRawToDigiTrigger/interface/HGCalCellIndexerTrigger.h"
-#include "HGCalCommissioning/HGCalRawToDigiTrigger/interface/HGCalModuleIndexerTrigger_test.h"
-
+#include "CondFormats/HGCalObjects/interface/HGCalMappingModuleIndexerTrigger.h"
+#include "CondFormats/HGCalObjects/interface/HGCalMappingCellIndexerTrigger.h"
 #include "CondFormats/HGCalObjects/interface/HGCalMappingParameterHost.h"
+
 #include "DataFormats/HGCalDigi/interface/HGCalElectronicsId.h"
 #include "DataFormats/ForwardDetId/interface/HGCSiliconDetId.h"
 #include "DataFormats/ForwardDetId/interface/HGCScintillatorDetId.h"
