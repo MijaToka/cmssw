@@ -10,11 +10,11 @@
 #include "FWCore/Framework/interface/one/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
 
-// #include "HeterogeneousCore/AlpakaCore/interface/alpaka/EDPutToken.h"
-// #include "HeterogeneousCore/AlpakaCore/interface/alpaka/ESGetToken.h"
-// #include "HeterogeneousCore/AlpakaCore/interface/alpaka/Event.h"
-// #include "HeterogeneousCore/AlpakaInterface/interface/config.h"
-// #include "HeterogeneousCore/AlpakaInterface/interface/CopyToDevice.h"
+#include "HeterogeneousCore/AlpakaCore/interface/alpaka/EDPutToken.h"
+#include "HeterogeneousCore/AlpakaCore/interface/alpaka/ESGetToken.h"
+#include "HeterogeneousCore/AlpakaCore/interface/alpaka/Event.h"
+#include "HeterogeneousCore/AlpakaInterface/interface/config.h"
+#include "HeterogeneousCore/AlpakaInterface/interface/CopyToDevice.h"
 
 #include "CondFormats/DataRecord/interface/HGCalElectronicsMappingRcd.h"
 #include "CondFormats/DataRecord/interface/HGCalDenseIndexInfoRcd.h"
@@ -23,9 +23,9 @@
 #include "CondFormats/HGCalObjects/interface/HGCalMappingParameterHost.h"
 #include "Geometry/HGCalMapping/interface/HGCalMappingTools.h"
 
-class HGCalMappingESSourceTester : public edm::one::EDAnalyzer<> {
+class HGCalMappingTriggerESSourceTester : public edm::one::EDAnalyzer<> {
 public:
-  explicit HGCalMappingESSourceTester(const edm::ParameterSet&);
+  explicit HGCalMappingTriggerESSourceTester(const edm::ParameterSet&);
   static void fillDescriptions(edm::ConfigurationDescriptions&);
   std::map<uint32_t, uint32_t> mapGeoToElectronics(const hgcal::HGCalMappingModuleParamHost& modules,
                                                    const hgcal::HGCalMappingCellParamHost& cells,
@@ -44,7 +44,7 @@ private:
 };
 
 //
-HGCalMappingESSourceTester::HGCalMappingESSourceTester(const edm::ParameterSet& iConfig)
+HGCalMappingTriggerESSourceTester::HGCalMappingTriggerESSourceTester(const edm::ParameterSet& iConfig)
     : cellIndexTkn_(esConsumes()),
       cellTkn_(esConsumes()),
       moduleIndexTkn_(esConsumes()),
@@ -52,7 +52,7 @@ HGCalMappingESSourceTester::HGCalMappingESSourceTester(const edm::ParameterSet& 
       denseIndexTkn_(esConsumes()) {}
 
 //
-void HGCalMappingESSourceTester::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+void HGCalMappingTriggerESSourceTester::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   // if the cfg didn't change there's nothing else to do
   if (!cfgWatcher_.check(iSetup))
     return;
@@ -338,13 +338,13 @@ void HGCalMappingESSourceTester::analyze(const edm::Event& iEvent, const edm::Ev
 }
 
 //
-void HGCalMappingESSourceTester::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+void HGCalMappingTriggerESSourceTester::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   edm::ParameterSetDescription desc;
   descriptions.addWithDefaultLabel(desc);
 }
 
 //
-std::map<uint32_t, uint32_t> HGCalMappingESSourceTester::mapGeoToElectronics(
+std::map<uint32_t, uint32_t> HGCalMappingTriggerESSourceTester::mapGeoToElectronics(
     const hgcal::HGCalMappingModuleParamHost& modules,
     const hgcal::HGCalMappingCellParamHost& cells,
     bool geo2ele,
@@ -424,7 +424,7 @@ std::map<uint32_t, uint32_t> HGCalMappingESSourceTester::mapGeoToElectronics(
   }
 
   if (ndups > 0) {
-    printf("[HGCalMappingESSourceTester][mapGeoToElectronics] found %d duplicates with geo2ele=%d for sipm=%d\n",
+    printf("[HGCalMappingTriggerESSourceTester][mapGeoToElectronics] found %d duplicates with geo2ele=%d for sipm=%d\n",
            ndups,
            geo2ele,
            sipm);
