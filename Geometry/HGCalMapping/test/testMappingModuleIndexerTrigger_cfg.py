@@ -18,7 +18,7 @@ process.maxEvents = cms.untracked.PSet(
 )
 
 #electronics mapping
-from Geometry.HGCalMapping.hgcalmapping_cff import customise_hgcalmapper
+from Geometry.HGCalMapping.hgcalmappingtrigger_cff import customise_hgcalmapper
 process = customise_hgcalmapper(process,
                                 modules=options.modules,
                                 sicells=options.sicells,
