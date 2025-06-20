@@ -10,11 +10,11 @@
 #include "FWCore/Framework/interface/one/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
 
-#include "HeterogeneousCore/AlpakaCore/interface/alpaka/EDPutToken.h"
-#include "HeterogeneousCore/AlpakaCore/interface/alpaka/ESGetToken.h"
-#include "HeterogeneousCore/AlpakaCore/interface/alpaka/Event.h"
-#include "HeterogeneousCore/AlpakaInterface/interface/config.h"
-#include "HeterogeneousCore/AlpakaInterface/interface/CopyToDevice.h"
+// #include "HeterogeneousCore/AlpakaCore/interface/alpaka/EDPutToken.h"
+// #include "HeterogeneousCore/AlpakaCore/interface/alpaka/ESGetToken.h"
+// #include "HeterogeneousCore/AlpakaCore/interface/alpaka/Event.h"
+// #include "HeterogeneousCore/AlpakaInterface/interface/config.h"
+// #include "HeterogeneousCore/AlpakaInterface/interface/CopyToDevice.h"
 
 #include "CondFormats/DataRecord/interface/HGCalElectronicsMappingRcd.h"
 #include "CondFormats/DataRecord/interface/HGCalDenseIndexInfoRcd.h"
