@@ -74,7 +74,7 @@ void HGCalMappingESSourceTester::analyze(const edm::Event& iEvent, const edm::Ev
 
     //check that the current offset is consistent with the increment from cells from the previous module
     if (idx > 0) {
-      uint32_t nch_prev = cellIdx.maxErx_[idx - 1] * cellIdx.maxChPerErx_;
+      uint32_t nch_prev = cellIdx.maxROC_[idx - 1] * cellIdx.maxTrLink_[idx - 1] * cellIdx.maxTCPerLink_[idx - 1];
       uint32_t delta_offset = cellIdx.offsets_[idx] - cellIdx.offsets_[idx - 1];
       assert(delta_offset == nch_prev);
     }
@@ -83,13 +83,14 @@ void HGCalMappingESSourceTester::analyze(const edm::Event& iEvent, const edm::Ev
     auto off = cellIdx.offsets_[idx];
     assert(off == totOffset);
 
-    totOffset += cellIdx.maxErx_[idx] * cellIdx.maxChPerErx_;
+    totOffset += cellIdx.maxROC_[idx] * cellIdx.maxTrLink_[idx] * cellIdx.maxTCPerLink_[idx];
 
     //print
-    printf("[HGCalMappingIndexESSourceTester][analyze][%s] has index(internal)=%ld #eRx=%d #cells=%d offset=%d\n",
+    printf("[HGCalMappingIndexESSourceTester][analyze][%s] has index(internal)=%ld #ROCs=%d #TLinks=%d #TCells=%d offset=%d\n",
            typecode.c_str(),
            idx,
-           cellIdx.maxErx_[idx],
+           cellIdx.maxROC_[idx],
+           cellIdx.maxTrLink_[idx],
            cellIdx.di_[idx].getMaxIndex(),
            cellIdx.offsets_[idx]);
   }
@@ -105,31 +106,31 @@ void HGCalMappingESSourceTester::analyze(const edm::Event& iEvent, const edm::Ev
   for (uint32_t i = 0; i < ncells; i++) {
     auto icell = cells.view()[i];
     if (!cells.view()[i].valid())
-      continue;
+    continue;
     validCells++;
     printf(
-        "\t idx=%d isHD=%d iscalib=%d isSiPM=%d typeidx=%d chip=%d half=%d seq=%d rocpin=%d sensorcell=%d triglink=%d "
-        "trigcell=%d i1=%d i2=%d t=%d trace=%f eleid=0x%x detid=0x%x\n",
-        i,
-        icell.isHD(),
-        icell.iscalib(),
-        icell.isSiPM(),
-        icell.typeidx(),
-        icell.chip(),
-        icell.half(),
-        icell.seq(),
-        icell.rocpin(),
-        icell.sensorcell(),
-        icell.triglink(),
-        icell.trigcell(),
-        icell.i1(),
-        icell.i2(),
-        icell.t(),
-        icell.trace(),
-        icell.eleid(),
-        icell.detid());
-  }
-
+      "\t idx=%d isHD=%d iscalib=%d isSiPM=%d typeidx=%d chip=%d half=%d seq=%d rocpin=%d sensorcell=%d triglink=%d "
+      "trigcell=%d i1=%d i2=%d t=%d trace=%f eleid=0x%x detid=0x%x\n",
+      i,
+      icell.isHD(),
+      icell.iscalib(),
+      icell.isSiPM(),
+      icell.typeidx(),
+      icell.chip(),
+      icell.half(),
+      icell.seq(),
+      icell.rocpin(),
+      icell.sensorcell(),
+      icell.triglink(),
+      icell.trigcell(),
+      icell.i1(),
+      icell.i2(),
+      icell.t(),
+      icell.trace(),
+      icell.eleid(),
+      icell.detid());
+    }
+    
   //module mapping
   auto const& modulesIdx = iSetup.getData(moduleIndexTkn_);
   printf("[HGCalMappingIndexESSourceTester][analyze] Module indexer has FEDs=%d Types in sequences=%ld max idx=%d\n",
@@ -137,30 +138,30 @@ void HGCalMappingESSourceTester::analyze(const edm::Event& iEvent, const edm::Ev
          modulesIdx.getGlobalTypesCounter().size(),
          modulesIdx.maxModulesIndex());
   printf("[HGCalMappingIndexESSourceTester][analyze] FED Readout sequence\n");
-  std::unordered_set<uint32_t> unique_modOffsets, unique_erxOffsets, unique_chDataOffsets;
+  std::unordered_set<uint32_t> unique_modOffsets, unique_TrLinkOffsets, unique_TCOffsets;
   uint32_t totalmods(0);
   for (const auto& frs : modulesIdx.getFEDReadoutSequences()) {
     std::copy(
         frs.modOffsets_.begin(), frs.modOffsets_.end(), std::inserter(unique_modOffsets, unique_modOffsets.end()));
     std::copy(
-        frs.erxOffsets_.begin(), frs.erxOffsets_.end(), std::inserter(unique_erxOffsets, unique_erxOffsets.end()));
-    std::copy(frs.chDataOffsets_.begin(),
-              frs.chDataOffsets_.end(),
-              std::inserter(unique_chDataOffsets, unique_chDataOffsets.end()));
+        frs.TrLinkOffsets_.begin(), frs.TrLinkOffsets_.end(), std::inserter(unique_TrLinkOffsets, unique_TrLinkOffsets.end()));
+    std::copy(frs.TCOffsets_.begin(),
+              frs.TCOffsets_.end(),
+              std::inserter(unique_TCOffsets, unique_TCOffsets.end()));
 
     size_t nmods = frs.readoutTypes_.size();
     totalmods += nmods;
     printf("\t[FED %d] packs data from %ld ECON-Ds - readout types -> (offsets) :", frs.id, nmods);
     for (size_t i = 0; i < nmods; i++) {
-      printf("\t%d -> (%d;%d;%d)", frs.readoutTypes_[i], frs.modOffsets_[i], frs.erxOffsets_[i], frs.chDataOffsets_[i]);
+      printf("\t%d -> (%d;%d;%d)", frs.readoutTypes_[i], frs.modOffsets_[i], frs.TrLinkOffsets_[i], frs.TCOffsets_[i]);
     }
     printf("\n");
   }
   //check that there are unique offsets per modules in the full system
   assert(unique_modOffsets.size() == totalmods);
-  assert(unique_erxOffsets.size() == totalmods);
-  assert(unique_chDataOffsets.size() == totalmods);
-
+  assert(unique_TrLinkOffsets.size() == totalmods);
+  assert(unique_TCOffsets.size() == totalmods);
+  
   //get the module mapper SoA
   auto const& modules = iSetup.getData(moduleTkn_);
   int nmodules = modulesIdx.maxModulesIndex();
@@ -433,4 +434,4 @@ std::map<uint32_t, uint32_t> HGCalMappingESSourceTester::mapGeoToElectronics(
 }
 
 // define this as a plug-in
-DEFINE_FWK_MODULE(HGCalMappingESSourceTester);
+DEFINE_FWK_MODULE(HGCalMappingTriggerESSourceTester);
