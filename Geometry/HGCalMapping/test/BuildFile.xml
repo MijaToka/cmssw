@@ -14,3 +14,14 @@
   <use name="FWCore/Utilities"/>
   <flags EDM_PLUGIN="1"/>
 </library>
+
+<library file="HGCalMappingTriggerESSourceTester.cc">
+  <use name="CondFormats/DataRecord"/>
+  <use name="CondFormats/HGCalObjects"/>
+  <use name="Geometry/HGCalMapping"/>
+  <use name="FWCore/Framework"/>
+  <use name="FWCore/MessageLogger"/>
+  <use name="FWCore/ParameterSet"/>
+  <use name="FWCore/Utilities"/>
+  <flags EDM_PLUGIN="1"/>
+</library>
