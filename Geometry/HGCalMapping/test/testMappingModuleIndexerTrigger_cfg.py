@@ -18,7 +18,7 @@ process.maxEvents = cms.untracked.PSet(
 )
 
 #electronics mapping
-from Geometry.HGCalMapping.hgcalmapping_cff import customise_hgcalmapper
+from Geometry.HGCalMapping.hgcalmappingtrigger_cff import customise_hgcalmapper
 process = customise_hgcalmapper(process,
                                 modules=options.modules,
                                 sicells=options.sicells,
@@ -28,6 +28,6 @@ process = customise_hgcalmapper(process,
 process.load('Configuration.Geometry.GeometryExtended2025Reco_cff')
 
 #tester
-process.tester = cms.EDAnalyzer('HGCalMappingESSourceTester')
+process.tester = cms.EDAnalyzer('HGCalMappingTriggerESSourceTester')
 
 process.p = cms.Path(process.tester)
