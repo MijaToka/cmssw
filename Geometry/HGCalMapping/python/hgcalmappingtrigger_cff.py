@@ -8,10 +8,10 @@ def customise_hgcalmapper(process,
     NOTE: for production-targetted configs should be avoided as it checks if the process as 
     already the Accelerators sequence loaded, if not it loads it to the process"""
 
-    process.load('Geometry.HGCalMapping.hgCalMappingESProducer_cfi')
-    process.hgCalMappingESProducer.modules = cms.FileInPath(modules)
-    process.hgCalMappingESProducer.si = cms.FileInPath(sicells)
-    process.hgCalMappingESProducer.sipm = cms.FileInPath(sipmcells)
+    process.load('Geometry.HGCalMapping.hgCalMappingTriggerESProducer_cfi')
+    process.hgCalMappingTriggerESProducer.modules = cms.FileInPath(modules)
+    process.hgCalMappingTriggerESProducer.si = cms.FileInPath(sicells)
+    process.hgCalMappingTriggerESProducer.sipm = cms.FileInPath(sipmcells)
 
     if not hasattr(process, 'ProcessAcceleratorCUDA'):
         process.load('Configuration.StandardSequences.Accelerators_cff')
@@ -19,9 +19,9 @@ def customise_hgcalmapper(process,
     # process.hgCalMappingCellESProducer = cms.ESProducer('hgcal::HGCalMappingCellESProducer@alpaka',
     #                                                     filelist=cms.vstring(sicells, sipmcells),
     #                                                     cellindexer=cms.ESInputTag(''))
-    process.hgCalMappingModuleESProducer = cms.ESProducer('HGCalMappingTriggerESProducer',
-                                                          filename=cms.FileInPath(modules),
-                                                          moduleindexer=cms.ESInputTag(''))
+    #process.hgCalMappingModuleESProducer = cms.ESProducer('HGCalMappingTriggerESProducer',
+    #                                                      filename=cms.FileInPath(modules),
+    #                                                      moduleindexer=cms.ESInputTag(''))
     # process.hgCalDenseIndexInfoESProducer = cms.ESProducer('hgcal::HGCalDenseIndexInfoESProducer@alpaka',
     #                                                        moduleindexer=cms.ESInputTag('') )
     
