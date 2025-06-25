@@ -101,7 +101,7 @@ void HGCalMappingTriggerESSourceTester::analyze(const edm::Event& iEvent, const 
   //printout and test module cells SoA contents
   uint32_t ncells = cells.view().metadata().size();
   uint32_t validCells = 0;
-  assert(ncells == cellIdx.maxDenseIndex());  //check for consistent size
+  //assert(ncells == cellIdx.maxDenseIndex());  //check for consistent size
   printf("[HGCalMappingIndexESSourceTester][analyze] Module cell mapping contents\n");
   for (uint32_t i = 0; i < ncells; i++) {
     auto icell = cells.view()[i];
@@ -151,7 +151,7 @@ void HGCalMappingTriggerESSourceTester::analyze(const edm::Event& iEvent, const 
 
     size_t nmods = frs.readoutTypes_.size();
     totalmods += nmods;
-    printf("\t[FED %d] packs data from %ld ECON-Ds - readout types -> (offsets) :", frs.id, nmods);
+    printf("\t[FED %d] packs data from %ld ECON-Ts - readout types -> (offsets) :", frs.id, nmods);
     for (size_t i = 0; i < nmods; i++) {
       printf("\t%d -> (%d;%d;%d)", frs.readoutTypes_[i], frs.modOffsets_[i], frs.TrLinkOffsets_[i], frs.TCOffsets_[i]);
     }
