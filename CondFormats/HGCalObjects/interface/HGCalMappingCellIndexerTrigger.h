@@ -37,9 +37,9 @@ public:
     /*High density modules have links {0, 2} and low {0, 1, 2, 3} so to make it work I need to divide by 2*/
     if (typecode[1]=='H') trLink/=2; 
 
-    maxROC_[idx] = std::max(maxROC_[idx], ROC);
-    maxTrLink_[idx] = std::max(maxTrLink_[idx], trLink);
-    maxTCPerLink_[idx] = std::max(maxTCPerLink_[idx], trCell);
+    maxROC_[idx] = std::max(maxROC_[idx], static_cast<uint16_t>(ROC+1));
+    maxTrLink_[idx] = std::max(maxTrLink_[idx], static_cast<uint16_t>(trLink+1));
+    maxTCPerLink_[idx] = std::max(maxTCPerLink_[idx], static_cast<uint16_t>(trCell+1));
   }
 
   /**

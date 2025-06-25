@@ -3,7 +3,7 @@ process = cms.Process("TEST")
 
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing('python')
-options.register('modules','Geometry/HGCalMapping/data/ModuleMaps/modulelocator_test.txt',mytype=VarParsing.varType.string,
+options.register('modules','Geometry/HGCalMapping/test/data/modulelocator_trigger_test.txt',mytype=VarParsing.varType.string,
                  info="Path to module mapper. Absolute, or relative to CMSSW src directory")
 options.register('sicells','Geometry/HGCalMapping/data/CellMaps/WaferCellMapTraces.txt',mytype=VarParsing.varType.string,
                  info="Path to Si cell mapper. Absolute, or relative to CMSSW src directory")
@@ -18,7 +18,7 @@ process.maxEvents = cms.untracked.PSet(
 )
 
 #electronics mapping
-from Geometry.HGCalMapping.hgcalmappingtrigger_cff import customise_hgcalmapper
+from Geometry.HGCalMapping.hgcalmapping_cff import customise_hgcalmapper
 process = customise_hgcalmapper(process,
                                 modules=options.modules,
                                 sicells=options.sicells,
