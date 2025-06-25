@@ -9,9 +9,9 @@ def customise_hgcalmapper(process,
     already the Accelerators sequence loaded, if not it loads it to the process"""
 
     process.load('Geometry.HGCalMapping.hgCalMappingTriggerESProducer_cfi')
-    process.hgCalMappingTriggerESProducer_cfi.modules = cms.FileInPath(modules)
-    process.hgCalMappingTriggerESProducer_cfi.si = cms.FileInPath(sicells)
-    process.hgCalMappingTriggerESProducer_cfi.sipm = cms.FileInPath(sipmcells)
+    process.hgCalMappingTriggerESProducer.modules = cms.FileInPath(modules)
+    process.hgCalMappingTriggerESProducer.si = cms.FileInPath(sicells)
+    process.hgCalMappingTriggerESProducer.sipm = cms.FileInPath(sipmcells)
 
     if not hasattr(process, 'ProcessAcceleratorCUDA'):
         process.load('Configuration.StandardSequences.Accelerators_cff')
