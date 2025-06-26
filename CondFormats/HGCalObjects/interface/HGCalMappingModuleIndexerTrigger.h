@@ -177,7 +177,7 @@ public:
   std::vector<uint32_t> const &getTrCellOffsets() const { return offsetsTC_; }
   uint32_t fedCount() const { return nfeds_; }
   uint32_t maxDataIndex() const { return maxNTCIdx_; }
-  uint32_t maxErxIndex() const { return maxTrLinksIdx_; }
+  uint32_t maxTrLinkIndex() const { return maxTrLinksIdx_; }
   uint32_t maxModulesIndex() const { return maxModulesIdx_; }
   std::map<std::string, std::pair<uint32_t, uint32_t>> const &getTypecodeMap() const { return typecodeMap_; }
 
