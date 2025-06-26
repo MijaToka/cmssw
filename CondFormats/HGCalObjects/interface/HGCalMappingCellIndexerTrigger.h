@@ -10,7 +10,7 @@
 #include "CondFormats/HGCalObjects/interface/HGCalDenseIndexerBase.h"
 
 /**
-   @short utility class to assign dense readout cell indexing
+   @short utility class to assign dense readout trigger cell indexing
  */
 class HGCalMappingCellIndexerTrigger {
 public:
@@ -100,29 +100,30 @@ public:
   }
 
   /**
-     @short builders for the dense index
-   */
-  /* OLD ##########
-  uint32_t denseIndex(std::string typecode, uint32_t chip, uint32_t erx, uint32_t seq) const {
-    return denseIndex(getEnumFromTypecode(typecode), chip, erx, seq);
-  }
-  uint32_t denseIndex(std::string typecode, uint32_t erx, uint32_t seq) const {
-    return denseIndex(getEnumFromTypecode(typecode), erx, seq);
-  }
-  uint32_t denseIndex(size_t idx, uint32_t chip, uint32_t half, uint32_t seq) const {
-    uint16_t erx = chip * maxHalfPerROC_ + half;
-    return denseIndex(idx, erx, seq);
-  }
-  uint32_t denseIndex(size_t idx, uint32_t erx, uint32_t seq) const {
-    return di_[idx].denseIndex({{erx, seq}}) + offsets_[idx];
-  }
-  ############## */
+    @short builders for the dense index
+  */
   uint16_t denseIndex(std::string typecode, uint32_t ROC, uint32_t trLink, uint32_t trCell) const {
     return denseIndex(getEnumFromTypecode(typecode), ROC, trLink, trCell);
   }
   uint32_t denseIndex(size_t idx, uint32_t ROC, uint32_t trLink, uint32_t trCell) const {
     return di_[idx].denseIndex({{ROC,trLink,trCell}}) + offsets_[idx];
   }
+    /* OLD ##########
+    uint32_t denseIndex(std::string typecode, uint32_t chip, uint32_t erx, uint32_t seq) const {
+      return denseIndex(getEnumFromTypecode(typecode), chip, erx, seq);
+    }
+    uint32_t denseIndex(std::string typecode, uint32_t erx, uint32_t seq) const {
+      return denseIndex(getEnumFromTypecode(typecode), erx, seq);
+    }
+    uint32_t denseIndex(size_t idx, uint32_t chip, uint32_t half, uint32_t seq) const {
+      uint16_t erx = chip * maxHalfPerROC_ + half;
+      return denseIndex(idx, erx, seq);
+    }
+    uint32_t denseIndex(size_t idx, uint32_t erx, uint32_t seq) const {
+      return di_[idx].denseIndex({{erx, seq}}) + offsets_[idx];
+    }
+    ############## */
+
   /**
      @short decodes the dense index code
   */
@@ -139,6 +140,7 @@ public:
     return HGCalElectronicsId(false, 0, 0, 0, rtn_codes[0], rtn_codes[1]).raw();
   }
   ################################*/
+
   /**
      @short returns the max. dense index expected
    */
@@ -150,8 +152,8 @@ public:
   }
 
   /**
-     @short gets the number of words for a given typecode 
-     TODO: For the partials it will give a number rounded to the closest multiple of 16/8 if M[L/H],
+     @short gets the number of words (cells) for a given typecode 
+     TODO:(?) For the partials it will give a number rounded to the closest multiple of 16/8 if M[L/H],
      ask if this needs correcting or if it is acceptable
      e.g.: ML-T has 22 TCs but this will return 32 or MH-T has 19 but it will return 24
   */
