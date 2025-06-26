@@ -93,12 +93,14 @@ public:
     return getIndexForModuleTrLink(fedid, modid, trLinkidx);
   }
   uint32_t getIndexForModuleData(uint32_t fedid, uint32_t modid, uint32_t trLinkidx, uint32_t TCidx) const {
-    return fedReadoutSequences_[fedid].TCOffsets_[modid] + trLinkidx * HGCalMappingCellIndexerTrigger::maxTCPerTrLink_ + TCidx;
+    return getIndexForModuleData(fedid, modid, trLinkidx * HGCalMappingCellIndexerTrigger::maxTCPerTrLink_ + TCidx);
   };
-  uint32_t getIndexForModuleData(
-      uint32_t fedid, uint16_t captureblockIdx, uint16_t econtIdx, uint32_t trLinkidx, uint32_t TCidx) const {
+  uint32_t getIndexForModuleData(uint32_t fedid, uint16_t captureblockIdx, uint16_t econtIdx, uint32_t trLinkidx, uint32_t TCidx) const {
     uint32_t modid = denseIndexingFor(fedid, econtIdx);
     return getIndexForModuleData(fedid, modid, trLinkidx, TCidx);
+    };
+  uint32_t getIndexForModuleData(uint32_t fedid, uint32_t modid, uint32_t denseTCidx) const {
+    return fedReadoutSequences_[fedid].TCOffsets_[modid] + totalTCidx;
   };
   /* No HGCalElectronicsId for the trigger
   uint32_t getIndexForModuleData(HGCalElectronicsId id) const {
