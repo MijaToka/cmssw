@@ -162,13 +162,13 @@ public:
   size_t getNWordsExpectedFor(size_t typecodeidx) const { return getDenseIndexerFor(typecodeidx).getMaxIndex(); }
 
   /**
-     @short gets the number of e-Rx for a given typecode
+     @short gets the number of Trigger Links for a given typecode
   */
   size_t getNTrLinkExpectedFor(std::string typecode) const {
     auto it = getEnumFromTypecode(typecode);
     return getNTrLinkExpectedFor(it);
   }
-  size_t getNTrLinkExpectedFor(size_t typecodeidx) const { return maxTrLink_[typecodeidx]; }
+  size_t getNTrLinkExpectedFor(size_t typecodeidx) const { return maxTrLink_[typecodeidx]*maxROC_[typecodeidx]; }
 
   constexpr static char maxHalfPerROC_ = 2;
   //constexpr static uint16_t maxChPerErx_ = 37;  //36 channels + 1 calib
