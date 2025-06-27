@@ -100,7 +100,7 @@ public:
     return getIndexForModuleData(fedid, modid, trLinkidx, TCidx);
     };
   uint32_t getIndexForModuleData(uint32_t fedid, uint32_t modid, uint32_t denseTCidx) const {
-    return fedReadoutSequences_[fedid].TCOffsets_[modid] + totalTCidx;
+    return fedReadoutSequences_[fedid].TCOffsets_[modid] + denseTCidx;
   };
   /* No HGCalElectronicsId for the trigger
   uint32_t getIndexForModuleData(HGCalElectronicsId id) const {
