@@ -139,7 +139,7 @@ void HGCalMappingTriggerESProducer::prepareModuleMapperIndexer() {
       nwords = defaultTypeNTCs;
     }
 
-    int fedid = pmap.getIntAttr("fedid", row);
+    int fedid = pmap.getIntAttr("trig_fedid", row);
     //int captureblockidx = pmap.getIntAttr("captureblockidx", row);
     int econtidx = pmap.getIntAttr("econtidx", row);
     modIndexer_.processNewModule(fedid, econtidx, typecodeidx, nTrLinks, nwords, typecode);
