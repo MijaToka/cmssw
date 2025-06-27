@@ -14,6 +14,9 @@ __init__.py
 # ignore files under the top level $CMSSW_BASE/src directory, but not its subdirectories
 /*
 !/*/
+## Exceptions to the subdirectory rule
+/Logs/*
+/output/
 
 # ignore some IDE related files
 *.xcodeproj
