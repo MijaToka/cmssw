@@ -74,8 +74,8 @@ public:
   uint32_t getIndexForModule(uint32_t fedid, uint32_t modid) const {
     return fedReadoutSequences_[fedid].modOffsets_[modid];
   };
-  uint32_t getIndexForModule(uint32_t fedid, uint16_t captureblockIdx, uint16_t econdIdx) const {
-    uint32_t modid = denseIndexingFor(fedid, econdIdx);
+  uint32_t getIndexForModule(uint32_t fedid, uint16_t econtIdx) const {
+    uint32_t modid = denseIndexingFor(fedid, econtIdx);
     return getIndexForModule(fedid, modid);
   };
   //uint32_t getIndexForModule(HGCalElectronicsId id) const {
@@ -94,8 +94,8 @@ public:
   }
   uint32_t getIndexForModuleData(uint32_t fedid, uint32_t modid, uint32_t trLinkidx, uint32_t TCidx) const {
     return getIndexForModuleData(fedid, modid, trLinkidx * HGCalMappingCellIndexerTrigger::maxTCPerTrLink_ + TCidx);
-  };
-  uint32_t getIndexForModuleData(uint32_t fedid, uint16_t captureblockIdx, uint16_t econtIdx, uint32_t trLinkidx, uint32_t TCidx) const {
+  }; // Need to check the maxTCPerTrLink_ beacuse on SiPM may be different
+  uint32_t getIndexForModuleData(uint32_t fedid, uint16_t econtIdx, uint32_t trLinkidx, uint32_t TCidx) const {
     uint32_t modid = denseIndexingFor(fedid, econtIdx);
     return getIndexForModuleData(fedid, modid, trLinkidx, TCidx);
     };
@@ -203,12 +203,12 @@ private:
   std::map<std::string, std::pair<uint32_t, uint32_t>> typecodeMap_;
 
   /**
-   * @short given capture block and econd indices returns the dense indexer
+   * @short given econt index returns the dense indexer
    */
   uint32_t denseIndexingFor(uint32_t fedid, uint16_t econtIdx) const {
     if (fedid > nfeds_)
       throw cms::Exception("ValueError") << "FED ID=" << fedid << " is unknown to current mapping";
-    uint32_t idx = modFedIndexer_.denseIndex({{econtIdx,1}});
+    uint32_t idx = modFedIndexer_.denseIndex({{econtIdx,0}});
     auto dense_idx = fedReadoutSequences_[fedid].moduleLUT_[idx];
     if (dense_idx < 0)
       throw cms::Exception("ValueError") << "FED ID=" << fedid //<< " capture block=" << captureblockIdx
