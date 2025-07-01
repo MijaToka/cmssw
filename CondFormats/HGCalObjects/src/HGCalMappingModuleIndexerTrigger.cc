@@ -26,7 +26,7 @@ void HGCalMappingModuleIndexerTrigger::processNewModule(uint32_t fedid,
   frs.id = fedid;
 
   //assign position, resize if needed, and fill the type code
-  uint32_t idx = modFedIndexer_.denseIndex({{econtIdx}});
+  uint32_t idx = modFedIndexer_.denseIndex({{econtIdx,0}}); // This will give back the econt*1+0 = econt
   if (idx >= frs.readoutTypes_.size()) {
     frs.readoutTypes_.resize(idx + 1, -1);
   }

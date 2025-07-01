@@ -85,6 +85,7 @@ public:
     const auto &[fedid, modid] = getIndexForFedAndModule(typecode);  // (fedId,modId)
     return getIndexForModule(fedid, modid);
   };
+
   uint32_t getIndexForModuleTrLink(uint32_t fedid, uint32_t modid, uint32_t trLinkidx) const {
     return fedReadoutSequences_[fedid].TrLinkOffsets_[modid] + trLinkidx;
   };
@@ -92,9 +93,11 @@ public:
     uint32_t modid = denseIndexingFor(fedid, econtIdx);
     return getIndexForModuleTrLink(fedid, modid, trLinkidx);
   }
+
   uint32_t getIndexForModuleData(uint32_t fedid, uint32_t modid, uint32_t trLinkidx, uint32_t TCidx) const {
-    return getIndexForModuleData(fedid, modid, trLinkidx * HGCalMappingCellIndexerTrigger::maxTCPerTrLink_ + TCidx);
-  }; // Need to check the maxTCPerTrLink_ beacuse on SiPM may be different
+    uint32_t denseTCidx = getDenseTCIndex(fedid,modid,trLinkidx,TCidx);
+    return getIndexForModuleData(fedid, modid, denseTCidx);
+  };
   uint32_t getIndexForModuleData(uint32_t fedid, uint16_t econtIdx, uint32_t trLinkidx, uint32_t TCidx) const {
     uint32_t modid = denseIndexingFor(fedid, econtIdx);
     return getIndexForModuleData(fedid, modid, trLinkidx, TCidx);
@@ -115,6 +118,14 @@ public:
   };
   std::pair<uint32_t, uint32_t> getIndexForFedAndModule(std::string const &typecode) const;
 
+  uint32_t getDenseTCIndex(uint32_t fedid, uint32_t modid, uint32_t trLinkidx, uint32_t TCidx) const {
+    int typecodeidx = getTypeForModule(fedid,modid);
+    return getDenseTCIndex(typecodeidx,trLinkidx,TCidx);
+  };
+  uint32_t getDenseTCIndex(int typecodeidx, uint32_t trLinkidx, uint32_t TCidx) const {
+    return trLinkidx * (globalTypesNTCs_[typecodeidx]/globalTypesNTrLinks_[typecodeidx]) + TCidx; 
+  };
+
   /**
    * @short return number maximum index of FED, ECON-D Module, eRx ROC
    */
@@ -132,7 +143,7 @@ public:
   uint32_t getNumModules(uint32_t fedid) const {
     return fedReadoutSequences_[fedid].readoutTypes_.size();
   }  ///< number of ECON-Ds for given FED id
-  uint32_t getMaxERxSize() const {
+  uint32_t getMaxTrLinkSize() const {
     return maxTrLinksIdx_;
   }  ///< total number of eRx half-ROCs (useful for setting config SoA size)
   uint32_t getNumTrLinks(uint32_t fedid, uint32_t modid) const {
@@ -146,6 +157,7 @@ public:
   uint32_t getMaxDataSize() const {
     return maxNTCIdx_;
   }  ///< total number of channels (useful for setting calib SoA size)
+
   uint32_t getNumChannels(uint32_t fedid, uint32_t modid) const {
     auto modtype_val = fedReadoutSequences_[fedid].readoutTypes_[modid];
     return globalTypesNTCs_[modtype_val];
