@@ -85,6 +85,7 @@ public:
     const auto &[fedid, modid] = getIndexForFedAndModule(typecode);  // (fedId,modId)
     return getIndexForModule(fedid, modid);
   };
+
   uint32_t getIndexForModuleTrLink(uint32_t fedid, uint32_t modid, uint32_t trLinkidx) const {
     return fedReadoutSequences_[fedid].TrLinkOffsets_[modid] + trLinkidx;
   };
@@ -92,6 +93,7 @@ public:
     uint32_t modid = denseIndexingFor(fedid, econtIdx);
     return getIndexForModuleTrLink(fedid, modid, trLinkidx);
   }
+
   uint32_t getIndexForModuleData(uint32_t fedid, uint32_t modid, uint32_t trLinkidx, uint32_t TCidx) const {
     return getIndexForModuleData(fedid, modid, trLinkidx * HGCalMappingCellIndexerTrigger::maxTCPerTrLink_ + TCidx);
   }; // Need to check the maxTCPerTrLink_ beacuse on SiPM may be different
@@ -132,7 +134,7 @@ public:
   uint32_t getNumModules(uint32_t fedid) const {
     return fedReadoutSequences_[fedid].readoutTypes_.size();
   }  ///< number of ECON-Ds for given FED id
-  uint32_t getMaxERxSize() const {
+  uint32_t getMaxTrLinkSize() const {
     return maxTrLinksIdx_;
   }  ///< total number of eRx half-ROCs (useful for setting config SoA size)
   uint32_t getNumTrLinks(uint32_t fedid, uint32_t modid) const {
@@ -146,6 +148,7 @@ public:
   uint32_t getMaxDataSize() const {
     return maxNTCIdx_;
   }  ///< total number of channels (useful for setting calib SoA size)
+
   uint32_t getNumChannels(uint32_t fedid, uint32_t modid) const {
     auto modtype_val = fedReadoutSequences_[fedid].readoutTypes_[modid];
     return globalTypesNTCs_[modtype_val];
@@ -203,12 +206,12 @@ private:
   std::map<std::string, std::pair<uint32_t, uint32_t>> typecodeMap_;
 
   /**
-   * @short given econt index returns the dense indexer
+   * @short given capture block and econd indices returns the dense indexer
    */
   uint32_t denseIndexingFor(uint32_t fedid, uint16_t econtIdx) const {
     if (fedid > nfeds_)
       throw cms::Exception("ValueError") << "FED ID=" << fedid << " is unknown to current mapping";
-    uint32_t idx = modFedIndexer_.denseIndex({{econtIdx,0}});
+    uint32_t idx = modFedIndexer_.denseIndex({{econtIdx,0}}); // This is a glorified
     auto dense_idx = fedReadoutSequences_[fedid].moduleLUT_[idx];
     if (dense_idx < 0)
       throw cms::Exception("ValueError") << "FED ID=" << fedid //<< " capture block=" << captureblockIdx
