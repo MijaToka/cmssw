@@ -14,6 +14,11 @@ def customise_hgcalmapper(process,
     process.hgCalMappingESProducer.si = cms.FileInPath(sicells)
     process.hgCalMappingESProducer.sipm = cms.FileInPath(sipmcells)
 
+    process.load('Geometry.HGCalMapping.hgCalMappingTriggerESProducer_cfi')
+    process.hgCalMappingTriggerESProducer.modules = cms.FileInPath(modules)
+    process.hgCalMappingTriggerESProducer.si = cms.FileInPath(sicells)
+    process.hgCalMappingTriggerESProducer.sipm = cms.FileInPath(sipmcells)
+
     if not hasattr(process, 'ProcessAcceleratorCUDA'):
         process.load('Configuration.StandardSequences.Accelerators_cff')
         
@@ -26,10 +31,5 @@ def customise_hgcalmapper(process,
                                                           moduleindexer=cms.ESInputTag(''))
     process.hgCalDenseIndexInfoESProducer = cms.ESProducer('hgcal::HGCalDenseIndexInfoESProducer@alpaka',
                                                            moduleindexer=cms.ESInputTag('') )
-    
-    process.load('Geometry.HGCalMapping.hgCalMappingTriggerESProducer_cfi')
-    process.hgCalMappingTriggerESProducer.modules = cms.FileInPath(modules)
-    process.hgCalMappingTriggerESProducer.si = cms.FileInPath(sicells)
-    process.hgCalMappingTriggerESProducer.sipm = cms.FileInPath(sipmcells)
 
     return process
