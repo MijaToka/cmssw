@@ -19,7 +19,7 @@ namespace hgcal {
   using HGCalDenseIndexInfoHost = PortableHostCollection<HGCalDenseIndexInfoSoA>;
 
   //SoA with detailed indices corresponding to the dense index in use for the trigger
-  using HGCalDenseIndexTiggerInfoHost = PortableHostCollection<HGCalDenseIndexTriggerInfoSoA>;
+  using HGCalDenseIndexTriggerInfoHost = PortableHostCollection<HGCalDenseIndexTriggerInfoSoA>;
 
 }  // namespace hgcal
 

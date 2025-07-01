@@ -14,6 +14,7 @@
 #include "DataFormats/HGCalDigi/interface/HGCalElectronicsId.h"
 #include "DataFormats/ForwardDetId/interface/HGCSiliconDetId.h"
 #include "DataFormats/ForwardDetId/interface/HGCScintillatorDetId.h"
+#include "DataFormats/ForwardDetId/interface/HGCTriggerDetId.h"
 #include "Geometry/HGCalMapping/interface/HGCalMappingTools.h"
 
 #include <string>
@@ -49,7 +50,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE {
 
         // load dense indexing
         const uint32_t size = modIndexer.maxModulesIndex();
-        HGCalMappingModuleTriggerParamSoA moduleParams(size, cms::alpakatools::host());
+        HGCalMappingModuleTriggerParamHost moduleParams(size, cms::alpakatools::host());
         for (size_t i = 0; i < size; i++)
           moduleParams.view()[i].valid() = false;
 
@@ -78,24 +79,22 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE {
           if (!isSiPM) {
             int zp(zside > 0 ? 1 : -1);
             DetId::Detector det = plane <= 26 ? DetId::Detector::HGCalEE : DetId::Detector::HGCalHSi;
-            detid = HGCTriggerDetId(det, zp, plane, /*sector*/0, /*mod*/0,/*channel*/0).rawId();
+            detid = HGCSiliconDetId(det, zp, celltype, plane, i1, i2, 0, 0).rawId();
           }
 
           auto module = moduleParams.view()[idx];
           module.valid() = true;
           module.zside() = (zside > 0);
           module.isSiPM() = isSiPM;
-          module.celltype() = celltype;
           module.plane() = plane;
           module.i1() = i1;
           module.i2() = i2;
           module.irot() = irot;
+          module.celltype() = celltype;
           module.typeidx() = typeidx;
           module.fedid() = fedid;
           module.slinkidx() = pmap.getIntAttr("slinkidx", row);
-          module.captureblock() = pmap.getIntAttr("captureblock", row);
-          module.econdidx() = econdidx;
-          module.captureblockidx() = captureblockidx;
+          module.econtidx() = econtidx;
           module.eleid() = eleid;
           module.detid() = detid;
         }
