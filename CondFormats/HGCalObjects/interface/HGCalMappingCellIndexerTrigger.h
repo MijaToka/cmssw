@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <vector>
 #include <numeric>
-#include "DataFormats/HGCalDigi/interface/HGCalElectronicsId.h"
+// #include "DataFormats/HGCalDigi/interface/HGCalElectronicsId.h"
 #include "CondFormats/Serialization/interface/Serializable.h"
 #include "CondFormats/HGCalObjects/interface/HGCalDenseIndexerBase.h"
 
@@ -36,7 +36,8 @@ public:
 
     /*High density modules have links {0, 2} and low {0, 1, 2, 3} so to make it work I need to divide by 2*/
     if (typecode[1]=='H') trLink/=2; 
-
+    /*SiPM tiles have trCells indexed from 1 instead from 0*/
+    if (typecode[0]=='T') trCell--;
     maxROC_[idx] = std::max(maxROC_[idx], static_cast<uint16_t>(ROC+1));
     maxTrLink_[idx] = std::max(maxTrLink_[idx], static_cast<uint16_t>(trLink+1));
     maxTCPerLink_[idx] = std::max(maxTCPerLink_[idx], static_cast<uint16_t>(trCell+1));
@@ -173,8 +174,8 @@ public:
   size_t getNTrLinkExpectedFor(size_t typecodeidx) const { return maxTrLink_[typecodeidx]*maxROC_[typecodeidx]; }
 
   constexpr static char maxHalfPerROC_ = 2;
-  //constexpr static uint16_t maxChPerErx_ = 37;  //36 channels + 1 calib
-  constexpr static uint16_t maxTCPerTrLink_ = 4; // 4 TC per TrLink
+  // constexpr static uint16_t maxChPerErx_ = 37;  //36 channels + 1 calib
+  // constexpr static uint16_t maxTCPerTrLink_ = 4; // 4 TC per TrLink: Not True for TM
 
   std::map<std::string, size_t> typeCodeIndexer_;
   std::vector<uint16_t> maxROC_;

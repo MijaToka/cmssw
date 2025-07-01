@@ -95,8 +95,9 @@ public:
   }
 
   uint32_t getIndexForModuleData(uint32_t fedid, uint32_t modid, uint32_t trLinkidx, uint32_t TCidx) const {
-    return getIndexForModuleData(fedid, modid, trLinkidx * HGCalMappingCellIndexerTrigger::maxTCPerTrLink_ + TCidx);
-  }; // Need to check the maxTCPerTrLink_ beacuse on SiPM may be different
+    uint32_t denseTCidx = getDenseTCIndex(fedid,modid,trLinkidx,TCidx);
+    return getIndexForModuleData(fedid, modid, denseTCidx);
+  };
   uint32_t getIndexForModuleData(uint32_t fedid, uint16_t econtIdx, uint32_t trLinkidx, uint32_t TCidx) const {
     uint32_t modid = denseIndexingFor(fedid, econtIdx);
     return getIndexForModuleData(fedid, modid, trLinkidx, TCidx);
@@ -116,6 +117,14 @@ public:
     return getIndexForModuleData(fedid, modid, 0, 0);
   };
   std::pair<uint32_t, uint32_t> getIndexForFedAndModule(std::string const &typecode) const;
+
+  uint32_t getDenseTCIndex(uint32_t fedid, uint32_t modid, uint32_t trLinkidx, uint32_t TCidx) const {
+    int typecodeidx = getTypeForModule(fedid,modid);
+    return getDenseTCIndex(typecodeidx,trLinkidx,TCidx);
+  };
+  uint32_t getDenseTCIndex(int typecodeidx, uint32_t trLinkidx, uint32_t TCidx) const {
+    return trLinkidx * (globalTypesNTCs_[typecodeidx]/globalTypesNTrLinks_[typecodeidx]) + TCidx; 
+  };
 
   /**
    * @short return number maximum index of FED, ECON-D Module, eRx ROC
