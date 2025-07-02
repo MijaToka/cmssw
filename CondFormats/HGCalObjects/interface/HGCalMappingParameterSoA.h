@@ -87,13 +87,16 @@ namespace hgcal {
 
   // Generatie structure of tirgger-cell level arrays (SoA) layout with module mapping info
   GENERATE_SOA_LAYOUT(HGCalDenseIndexTriggerInfoSoALayout,
-                      SOA_COLUMN(uint32_t, trig_fedId),
-                      SOA_COLUMN(uint16_t, econtidx),
+                      SOA_COLUMN(uint32_t, fedId),
+                      SOA_COLUMN(uint16_t, fedReadoutSeq),
                       SOA_COLUMN(uint32_t, detid),
                       SOA_COLUMN(uint32_t, eleid),
-                      SOA_COLUMN(uint32_t, trigModInfoIdx),
-                      SOA_COLUMN(uint32_t, trLinkNumber),
-                      SOA_COLUMN(uint32_t, trCellNumber))
+                      SOA_COLUMN(uint32_t, modInfoIdx),
+                      SOA_COLUMN(uint32_t, cellInfoIdx),
+                      SOA_COLUMN(uint32_t, TCNumber),
+                      SOA_COLUMN(float, x),
+                      SOA_COLUMN(float, y),
+                      SOA_COLUMN(float, z))
   using HGCalDenseIndexTriggerInfoSoA = HGCalDenseIndexTriggerInfoSoALayout<>;
 
 }  // namespace hgcal
