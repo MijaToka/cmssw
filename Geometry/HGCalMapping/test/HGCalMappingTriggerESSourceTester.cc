@@ -27,7 +27,7 @@ class HGCalMappingTriggerESSourceTester : public edm::one::EDAnalyzer<> {
 public:
   explicit HGCalMappingTriggerESSourceTester(const edm::ParameterSet&);
   static void fillDescriptions(edm::ConfigurationDescriptions&);
-  std::map<uint32_t, uint32_t> mapGeoToElectronics(const hgcal::HGCalMappingModuleParamHost& modules,
+  std::map<uint32_t, uint32_t> mapGeoToElectronics(const hgcal::HGCalMappingModuleTriggerParamHost& modules,
                                                    const hgcal::HGCalMappingCellParamHost& cells,
                                                    bool geo2ele,
                                                    bool sipm);
@@ -39,7 +39,7 @@ private:
   edm::ESGetToken<HGCalMappingCellIndexerTrigger, HGCalElectronicsMappingRcd> cellIndexTkn_;
   edm::ESGetToken<hgcal::HGCalMappingCellParamHost, HGCalElectronicsMappingRcd> cellTkn_;
   edm::ESGetToken<HGCalMappingModuleIndexerTrigger, HGCalElectronicsMappingRcd> moduleIndexTkn_;
-  edm::ESGetToken<hgcal::HGCalMappingModuleParamHost, HGCalElectronicsMappingRcd> moduleTkn_;
+  edm::ESGetToken<hgcal::HGCalMappingModuleTriggerParamHost, HGCalElectronicsMappingRcd> moduleTkn_;
   edm::ESGetToken<hgcal::HGCalDenseIndexInfoHost, HGCalDenseIndexInfoRcd> denseIndexTkn_;
 };
 
@@ -175,7 +175,7 @@ void HGCalMappingTriggerESSourceTester::analyze(const edm::Event& iEvent, const 
     validModules++;
     printf(
         "\t idx=%d zside=%d isSiPM=%d plane=%d i1=%d i2=%d irot=%d celltype=%d typeidx=%d fedid=%d localfedid=%d "
-        "captureblock=%d capturesblockidx=%d econdidx=%d eleid=0x%x detid=0x%d\n",
+        "econtidx=%d eleid=0x%x detid=0x%d\n",
         i,
         imod.zside(),
         imod.isSiPM(),
@@ -187,9 +187,7 @@ void HGCalMappingTriggerESSourceTester::analyze(const edm::Event& iEvent, const 
         imod.typeidx(),
         imod.fedid(),
         imod.slinkidx(),
-        imod.captureblock(),
-        imod.captureblockidx(),
-        imod.econdidx(),
+        imod.econtidx(),
         imod.eleid(),
         imod.detid());
   }
@@ -235,6 +233,7 @@ void HGCalMappingTriggerESSourceTester::analyze(const edm::Event& iEvent, const 
   tmap(sipmgeo2ele, sipmele2geo);
 
   // Timing studies
+  /* Skipped because the Trigger doesn't have propper eleid and detid
   uint16_t fedid(175), econdidx(2), captureblockidx(0), chip(0), half(1), seq(12), rocpin(48);
   int zside(0), n_i(6000000);
   printf("[HGCalMappingIndexESSourceTester][produce]  Creating %d number of raw ElectronicsIds\n", n_i);
@@ -315,12 +314,12 @@ void HGCalMappingTriggerESSourceTester::analyze(const edm::Event& iEvent, const 
   assert(did.layer() == modules.view()[modidx].plane());
   assert(did.cellU() == cells.view()[cellidx].i1());
   assert(did.cellV() == cells.view()[cellidx].i2());
-
+  */
   //test dense index token
   auto const& denseIndexInfo = iSetup.getData(denseIndexTkn_);
   printf("Retrieved %d dense index info\n", denseIndexInfo.view().metadata().size());
   int nindices = denseIndexInfo.view().metadata().size();
-  printf("fedId fedReadoutSeq detId eleid modix cellidx channel x y z");
+  printf("fedId fedReadoutSeq detId eleid modix cellidx channel x y z\n");
   for (int i = 0; i < nindices; i++) {
     auto row = denseIndexInfo.view()[i];
     printf("%d %d 0x%x 0x%x %d %d %d %f %f %f\n",
@@ -345,7 +344,7 @@ void HGCalMappingTriggerESSourceTester::fillDescriptions(edm::ConfigurationDescr
 
 //
 std::map<uint32_t, uint32_t> HGCalMappingTriggerESSourceTester::mapGeoToElectronics(
-    const hgcal::HGCalMappingModuleParamHost& modules,
+    const hgcal::HGCalMappingModuleTriggerParamHost& modules,
     const hgcal::HGCalMappingCellParamHost& cells,
     bool geo2ele,
     bool sipm) {

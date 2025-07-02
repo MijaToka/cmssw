@@ -27,6 +27,9 @@ def customise_hgcalmapper(process,
     process.hgCalMappingModuleESProducer = cms.ESProducer('hgcal::HGCalMappingModuleESProducer@alpaka',
                                                           filename=cms.FileInPath(modules),
                                                           moduleindexer=cms.ESInputTag(''))
+    process.hgCalMappingModuleTriggerESProducer = cms.ESProducer('hgcal::HGCalMappingTriggerModuleESProducer@alpaka',
+                                                                filename=cms.FileInPath(modules),
+                                                                moduleindexer=cms.ESInputTag(''))
     process.hgCalDenseIndexInfoESProducer = cms.ESProducer('hgcal::HGCalDenseIndexInfoESProducer@alpaka',
                                                            moduleindexer=cms.ESInputTag('') )
 
