@@ -40,7 +40,7 @@ private:
   edm::ESGetToken<hgcal::HGCalMappingCellParamHost, HGCalElectronicsMappingRcd> cellTkn_;
   edm::ESGetToken<HGCalMappingModuleIndexerTrigger, HGCalElectronicsMappingRcd> moduleIndexTkn_;
   edm::ESGetToken<hgcal::HGCalMappingModuleTriggerParamHost, HGCalElectronicsMappingRcd> moduleTkn_;
-  edm::ESGetToken<hgcal::HGCalDenseIndexInfoHost, HGCalDenseIndexInfoRcd> denseIndexTkn_;
+  edm::ESGetToken<hgcal::HGCalDenseIndexTriggerInfoHost, HGCalDenseIndexInfoRcd> denseIndexTkn_;
 };
 
 //
@@ -329,7 +329,7 @@ void HGCalMappingTriggerESSourceTester::analyze(const edm::Event& iEvent, const 
            row.eleid(),
            row.modInfoIdx(),
            row.cellInfoIdx(),
-           row.chNumber(),
+           row.TCNumber(),
            row.x(),
            row.y(),
            row.z());

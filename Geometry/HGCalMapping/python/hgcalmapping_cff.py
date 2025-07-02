@@ -32,5 +32,7 @@ def customise_hgcalmapper(process,
                                                                 moduleindexer=cms.ESInputTag(''))
     process.hgCalDenseIndexInfoESProducer = cms.ESProducer('hgcal::HGCalDenseIndexInfoESProducer@alpaka',
                                                            moduleindexer=cms.ESInputTag('') )
+    process.hgCalDenseIndexTriggerInfoESProducer = cms.ESProducer('hgcal::HGCalDenseIndexTriggerInfoESProducer@alpaka',
+                                                           moduleindexer=cms.ESInputTag('') )
 
     return process
