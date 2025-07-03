@@ -15,9 +15,9 @@ __init__.py
 /*
 !/*/
 ## Exceptions to the subdirectory rule
-/Logs/*
-/output/
-/scripts/*
+/Logs/
+/output*/
+/scripts/
 
 # ignore some IDE related files
 *.xcodeproj
