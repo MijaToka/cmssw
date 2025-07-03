@@ -4,7 +4,7 @@ def customise_hgcalmapper(process,
                           modules = 'Geometry/HGCalMapping/data/ModuleMaps/modulelocator_test.txt',
                           sicells = 'Geometry/HGCalMapping/data/CellMaps/WaferCellMapTraces.txt',
                           sipmcells = 'Geometry/HGCalMapping/data/CellMaps/channels_sipmontile.hgcal.txt',
-                          trigmodule = 'Geometry/HGCalMapping/data/ModuleMaps/modulelocator_trigger_test.txt'):
+                          trigmodule = 'Geometry/HGCalMapping/data/ModuleMaps/modulelocator_trigger_test.txt',
                           offsetfile = 'Geometry/HGCalMapping/data/CellMaps/calibration_to_surrounding_offsetMap.txt'):
     """the following function configures the mapping producers
     NOTE: for production-targetted configs should be avoided as it checks if the process as 
