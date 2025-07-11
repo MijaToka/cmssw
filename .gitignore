@@ -19,7 +19,7 @@ __init__.py
 /Logs/
 /output*/
 /scripts/
-
+/build/
 # ignore some IDE related files
 *.xcodeproj
 .vscode
