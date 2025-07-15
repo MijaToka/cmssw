@@ -112,16 +112,24 @@ void HGCalMappingTriggerESProducer::prepareModuleMapperIndexer() {
     // match module type code to regular expression pattern (MM-TTTT-LL-NNNN)
     // see https://edms.cern.ch/ui/#!master/navigator/document?D:101059405:101148061:subDocs
     //const std::regex typecode_regex("([MX])([LH])-([FTBLR5])([123])([WPC])-([A-Z]{2})-([0-9]{3,4})"); // MM-TTTT-LL-NNNN
-    const std::regex typecode_regex("(([MX])([LH])-([FTBLR5])).*");  // MM-T*
-    std::smatch typecode_match;                                      // match object for string objects
-    bool matched = std::regex_match(typecode, typecode_match, typecode_regex);
-    if (matched) {
-      wtypecode = typecode_match[1].str();  // wafer type following MM-T pattern, e.g. "MH-F"
-    } else {
-      edm::LogWarning("HGCalMappingIndexESSource")
-          << "Could not match module type code to expected pattern: " << typecode;
-    }
+    const std::regex typecode_regex_si("(([MX])([LH])-([FTBLR5])).*");  // MM-T*
+    // match typecode to regular expression SiPM (TX-LYYSZ-NNNN)
+    // https://indico.cern.ch/event/1558202/contributions/6567912/attachments/3092451/5477467/hgcalweek_DPG_2025.pdf
+    // slide 8
+    const std::regex typecode_regex_sipm("(T[HL]-L[0-9]+S[123]).*");  // SiPM typecode format TM-
+    std::smatch typecode_match_si,typecode_match_sipm;                   // match object for string objects
 
+    bool matched_si   = std::regex_match(typecode, typecode_match_si,   typecode_regex_si);
+    bool matched_sipm = std::regex_match(typecode, typecode_match_sipm, typecode_regex_sipm);
+    if (matched_si) {
+      wtypecode = typecode_match_si[1].str();  // wafer type following MM-T pattern, e.g. "MH-F"
+    } else if (matched_sipm){
+      wtypecode = typecode_match_sipm[1].str();
+    } else {
+    edm::LogWarning("HGCalMappingIndexESSource")
+        << "Could not match module type code to expected pattern: " << typecode;
+    }
+    
     try {
       typecodeidx = cellIndexer_.getEnumFromTypecode(wtypecode);
       nTrLinks = cellIndexer_.getNTrLinkExpectedFor(wtypecode);
