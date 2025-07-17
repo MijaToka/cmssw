@@ -109,26 +109,12 @@ public:
   uint32_t denseIndex(size_t idx, uint32_t ROC, uint32_t trLink, uint32_t trCell) const {
     return di_[idx].denseIndex({{ROC,trLink,trCell}}) + offsets_[idx];
   }
-    /* OLD ##########
-    uint32_t denseIndex(std::string typecode, uint32_t chip, uint32_t erx, uint32_t seq) const {
-      return denseIndex(getEnumFromTypecode(typecode), chip, erx, seq);
-    }
-    uint32_t denseIndex(std::string typecode, uint32_t erx, uint32_t seq) const {
-      return denseIndex(getEnumFromTypecode(typecode), erx, seq);
-    }
-    uint32_t denseIndex(size_t idx, uint32_t chip, uint32_t half, uint32_t seq) const {
-      uint16_t erx = chip * maxHalfPerROC_ + half;
-      return denseIndex(idx, erx, seq);
-    }
-    uint32_t denseIndex(size_t idx, uint32_t erx, uint32_t seq) const {
-      return di_[idx].denseIndex({{erx, seq}}) + offsets_[idx];
-    }
-    ############## */
 
   /**
      @short decodes the dense index code
   */
-  /* Only for Data, Trigger does not have elecId (?) ###########
+  /* ###############################
+   Only for Data, Trigger does not have elecId yet
   uint32_t elecIdFromIndex(uint32_t rtn, std::string typecode) const {
     return elecIdFromIndex(rtn, getEnumFromTypecode(typecode));
   }

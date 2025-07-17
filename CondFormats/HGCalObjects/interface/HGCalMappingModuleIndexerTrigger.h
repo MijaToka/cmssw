@@ -220,7 +220,7 @@ private:
   uint32_t denseIndexingFor(uint32_t fedid, uint16_t econtIdx) const {
     if (fedid > nfeds_)
       throw cms::Exception("ValueError") << "FED ID=" << fedid << " is unknown to current mapping";
-    uint32_t idx = modFedIndexer_.denseIndex({{econtIdx,0}}); // This is a glorified
+    uint32_t idx = modFedIndexer_.denseIndex({{econtIdx,0}});
     auto dense_idx = fedReadoutSequences_[fedid].moduleLUT_[idx];
     if (dense_idx < 0)
       throw cms::Exception("ValueError") << "FED ID=" << fedid //<< " capture block=" << captureblockIdx
